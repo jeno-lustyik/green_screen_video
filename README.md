@@ -1,9 +1,9 @@
 # Green Screen Video background changer
 With this project, you can change the greenscreen background of videos.
-There are 3 videos added to the streamlit interface that you can try out, each with different resolutions.
+There are 3 videos added to the streamlit interface that you can try out.
 
     AYAY.mp4 - 1920 x 1080
-    mimic_dude.mp4 - 1280 x 720
+    bateman_greenscreen.mp4 - 1920 x 1080
     greenscreen_jameson.mp4 - 640 x 360
 
 ##Requirements

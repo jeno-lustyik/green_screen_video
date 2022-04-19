@@ -13,12 +13,12 @@ if img is not None:
     img = Image.open(img)
     img.save('img.jpg')
     img = cv.imread('img.jpg')
-    select = st.selectbox('Choose a video to change the background on:', options=['Jameson', 'Mimic guy', 'JOJO'])
+    select = st.selectbox('Choose a video to change the background on:', options=['Jameson', 'JOJO', 'Patrick Bateman'])
 
     if select == 'Jameson':
         video = cv.VideoCapture('video/greenscreen_jameson.mp4')
-    if select == 'Mimic guy':
-        video = cv.VideoCapture('video/mimic_dude.mp4')
+    if select == 'Patrick Bateman':
+        video = cv.VideoCapture('video/bateman_greenscreen.mp4')
     if select == 'JOJO':
         video = cv.VideoCapture('video/AYAY.mp4')
 
