@@ -6,34 +6,55 @@ from PIL import Image
 
 img = st.file_uploader('Upload your desired background here:')
 
+# width = int(video.get(cv.CAP_PROP_FRAME_WIDTH))
+# heigth = int(video.get(cv.CAP_PROP_FRAME_HEIGHT))
+
 if img is not None:
     img = Image.open(img)
     img.save('img.jpg')
     img = cv.imread('img.jpg')
+    select = st.selectbox('Choose a video to change the background on:', options=['Jameson', 'Mimic guy', 'JOJO'])
 
-    video = cv.VideoCapture('greenscreen_jameson.mp4')
-    width = int(video.get(cv.CAP_PROP_FRAME_WIDTH))
-    heigth = int(video.get(cv.CAP_PROP_FRAME_HEIGHT))
+    if select == 'Jameson':
+        video = cv.VideoCapture('video/greenscreen_jameson.mp4')
+    if select == 'Mimic guy':
+        video = cv.VideoCapture('video/mimic_dude.mp4')
+    if select == 'JOJO':
+        video = cv.VideoCapture('video/AYAY.mp4')
 
-    while True:
-        ret, frame = video.read()
+    if st.button('Render video'):
+        width = int(video.get(cv.CAP_PROP_FRAME_WIDTH))
+        heigth = int(video.get(cv.CAP_PROP_FRAME_HEIGHT))
 
-        # frame = cv.resize(frame, (640, 480))
-        lower_bound = (30, 40, 40)
-        img = cv.resize(img, (width, heigth))
+        while True:
+            ret, frame = video.read()
 
-        hsv_img = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-        upper_bound = (85, 255, 255)
-        mask = cv.inRange(hsv_img, lower_bound, upper_bound)
-        final = cv.bitwise_and(frame, frame, mask=mask)
+            # To have a looping video without crashing, we run the code if the ret variable is not none.
+            if ret:
 
-        f = frame - final
-        f = np.where(f == 0, img, f)
+                # Set the size of the image to the size of the video used
+                frame = cv.resize(frame, (width, heigth))
+                img = cv.resize(img, (width, heigth))
 
-        cv.imshow('video', frame)
-        cv.imshow('mask', f)
+                hsv_img = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
-        if cv.waitKey(5) == ord('q'):
-            break
-    video.release()
-    cv.destroyAllWindows()
+                lower_g = (38, 40, 30)
+                upper_g = (85, 255, 255)
+                mask = cv.inRange(hsv_img, lower_g, upper_g)
+                final = cv.bitwise_and(frame, frame, mask=mask)
+
+                f = frame - final
+                f = np.where(f == 0, img, f)
+
+                cv.imshow('video', f)
+
+
+            # Else, we
+            else:
+                video.set(cv.CAP_PROP_POS_FRAMES, 0)
+                continue
+
+            if cv.waitKey(5) == ord('q'):
+                break
+        video.release()
+        cv.destroyAllWindows()
